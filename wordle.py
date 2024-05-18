@@ -1,6 +1,6 @@
 #C:\Users\chery\OneDrive\Documents\Wordle
 """Guess-My-Word is a game where the player has to guess a word.
-<your description>
+This game gives you 6 attempts to guess the 5-letter word of the day.
 Author: Xuan Koo
 Company: Words-are-us
 Copyright: 2024
