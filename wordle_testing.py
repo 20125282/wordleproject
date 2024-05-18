@@ -1,6 +1,6 @@
 #C:\Users\chery\OneDrive\Documents\Wordle
 """Guess-My-Word is a game where the player has to guess a word.
-This game gives you 6 attempts to guess the 5-letter word of the day.
+<your description>
 Author: Xuan Koo
 Company: Words-are-us
 Copyright: 2024
@@ -21,8 +21,8 @@ EXACT = 2  # X, +: right letter, right place 🟩
 MAX_ATTEMPTS = 6
 WORD_LENGTH = 5
 
-ALL_WORDS = 'C:\Users\chery\OneDrive\Documents\Wordle\word-bank\words.txt'
-TARGET_WORDS = 'C:\Users\chery\OneDrive\Documents\Wordle\word-bank\target_words.txt'
+ALL_WORDS = r'C:\Users\chery\OneDrive\Documents\Wordle\word-bank\words.txt'
+TARGET_WORDS = r'C:\Users\chery\OneDrive\Documents\Wordle\word-bank\target_words.txt'
 
 
 def play():
@@ -95,11 +95,12 @@ def get_target_word(file_path=TARGET_WORDS, seed=None):
 
 
 def ask_for_guess(valid_words):
-    """Requests a guess from the user directly from stdout/in
-    Returns:
-        str: the guess chosen by the user. Ensures guess is a valid word of correct length in lowercase
-    """
-    return 'wibble'
+    while True:
+        user_input = input("Enter your guess: ").lower()
+        if user_input in valid_words:
+            return user_input
+        else:
+            print("Invalid guess. Please enter a word with only 5 letters.")
 
 
 def score_guess(guess, target_word):
@@ -156,8 +157,8 @@ def main(test=False):
     if test:
         import doctest
         return doctest.testmod()
-    play()
-
+    else:
+        play()
 
 if __name__ == '__main__':
-    print(main(test=True))
+    main()
