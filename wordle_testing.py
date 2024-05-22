@@ -1,8 +1,9 @@
-#C:\Users\chery\OneDrive\Documents\Wordle
+#C:\Users\chery\OneDrive\Documents\Wordle\Wordle
 """Guess-My-Word is a game where the player has to guess a word.
-<your description>
+A game in which players put in 5-letters word guesses and see if they match the word of the day!
+Players will have 6 attempts to try guess the word correctly.
 Author: Xuan Koo
-Company: Words-are-us
+Company: WordsAreUs
 Copyright: 2024
 
 """
@@ -21,10 +22,10 @@ EXACT = 2  # X, +: right letter, right place 🟩
 MAX_ATTEMPTS = 6
 WORD_LENGTH = 5
 
-ALL_WORDS = r'C:\Users\chery\OneDrive\Documents\Wordle\word-bank\words.txt'
-TARGET_WORDS = r'C:\Users\chery\OneDrive\Documents\Wordle\word-bank\target_words.txt'
+ALL_WORDS = 'C:/Users/chery/OneDrive/Documents/Wordle/word-bank/all_words.txt'
+TARGET_WORDS = 'C:/Users/chery/OneDrive/Documents/Wordle/word-bank/target_words.txt'
 
-
+import random
 def play():
     """Code that controls the interactive game play"""
     # select a word of the day:
@@ -38,127 +39,67 @@ def play():
     print("Result of your guess:")
     print(format_score(guess, score))
     if is_correct(score):
-        print("Winner: You need to write code to exit out of this loop")
+        print("Winner winner chicken dinner! You guessed the word correctly!")
     # end iteration
     return True
 
 
 def is_correct(score):
-    """Checks if the score is entirely correct and returns True if it is
-    Examples:
-    >>> is_correct((1,1,1,1,1))
-    False
-    >>> is_correct((2,2,2,2,1))
-    False
-    >>> is_correct((0,0,0,0,0))
-    False
-    >>> is_correct((2,2,2,2,2))
-    True"""
-    return False
+    return all(s == EXACT for s in score)
 
-
-def get_valid_words(file_path=ALL_WORDS):
-    """returns a list containing all valid words.
-    Note to test that the file is read correctly, use:
-    >>> get_valid_words()[0]
-    'aahed'
-    >>> get_valid_words()[-1]
-    'zymic'
-    >>> get_valid_words()[10:15]
-    ['abamp', 'aband', 'abase', 'abash', 'abask']
-
-    """
-    # read words from files and return a list containing all words that can be entered as guesses
-
-    return ['wibble', 'wobble', 'wubble', 'wabble']
+def get_valid_words(file_path=ALL_WORDS, seed=None):
+    with open(file_path) as file:
+        valid = file.read().split()
+    return valid
 
 
 def get_target_word(file_path=TARGET_WORDS, seed=None):
-    """Picks a random word from a file of words
-
-    Args:
-        file_path (str): the path to the file containing the words
-
-    Returns:
-        str: a random word from the file
-
-    How do you test that a random word chooser is choosing the correct words??
-    Discuss in class!
-    >>> get_target_word()
-    'aback'
-    >>> get_target_word()
-    'zonal'
-
-    """
-    # read words from a file and return a random word (word of the day)
-    return 'woble'
+    with open(file_path) as file:
+        words = file.read().split()
+    return random.choice(words)
 
 
 def ask_for_guess(valid_words):
-    while True:
-        user_input = input("Enter your guess: ").lower()
-        if user_input in valid_words:
-            return user_input
-        else:
-            print("Invalid guess. Please enter a word with only 5 letters.")
-
+    guess_word = input("Take a guess at a 5-letter word!").lower()
+    if guess_word in valid_words:
+        return guess_word
+    else:
+        print("Please enter a valid 5-letter word")
+        return ask_for_guess()
 
 def score_guess(guess, target_word):
-    """given two strings of equal length, returns a tuple of ints representing the score of the guess
-    against the target word (MISS, MISPLACED, or EXACT)
-    Here are some example (will run as doctest):
-
-    >>> score_guess('hello', 'hello')
-    (2, 2, 2, 2, 2)
-    >>> score_guess('drain', 'float')
-    (0, 0, 1, 0, 0)
-    >>> score_guess('hello', 'spams')
-    (0, 0, 0, 0, 0)
-
-    Try and pass the first few tests in the doctest before passing these tests.
-    >>> score_guess('gauge', 'range')
-    (0, 2, 0, 2, 2)
-    >>> score_guess('melee', 'erect')
-    (0, 1, 0, 1, 0)
-    >>> score_guess('array', 'spray')
-    (0, 0, 2, 2, 2)
-    >>> score_guess('train', 'tenor')
-    (2, 1, 0, 0, 1)
-        """
-    # You must use this convention as test automation will be validating your scorer
-    return 0, 0, 0, 0, 0
+    score = []
+    for guess_char, target_char in zip(guess, target_word):
+        if guess_char == target_char:
+            score.append(EXACT)
+        elif guess_char in target_word:
+            score.append(MISSPLACED)
+        else:
+            score.append(MISS)
+    return tuple(score)
 
 
 def help():
     """Provides help for the game"""
-    pass
+    print("Welcome to the Guess-My-Word! The objective of the game is to guess a 5-letter word, you have 6 attempts.")
+    print("🟩 - Indicates a correct letter in the wrong position")
+    print("🟨 - Indicates a correct letter in the correct position")
+    print("⬜ - Indicates a letter not in the target word")
 
 
 def format_score(guess, score):
-    """Formats a guess with a given score as output to the terminal.
-    The following is an example output (you can change it to meet your own creative ideas,
-    but be sure to update these examples)
-    >>> print(format_score('hello', (0,0,0,0,0)))
-    H E L L O
-    _ _ _ _ _
-    >>> print(format_score('hello', (0,0,0,1,1)))
-    H E L L O
-    _ _ _ ? ?
-    >>> print(format_score('hello', (1,0,0,2,1)))
-    H E L L O
-    ? _ _ + ?
-    >>> print(format_score('hello', (2,2,2,2,2)))
-    H E L L O
-    + + + + +"""
-    pass
+    formatted_guess = ' '.join(guess.upper())
+    formatted_score = ' '.join(['🟩' if s == EXACT else '🟨' if s == MISSPLACED else '⬜' for s in score])
+    return f"{formatted_guess}\n{formatted_score}"
+
 
 
 def main(test=False):
     if test:
         import doctest
         return doctest.testmod()
-    else:
-        play()
+    play()
+
 
 if __name__ == '__main__':
-    main()
+    print(main(test=True))
