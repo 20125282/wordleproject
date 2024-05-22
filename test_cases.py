@@ -17,13 +17,12 @@ class TestScoring(unittest.TestCase):
         actual_formatted_guess = format_score(guess, score)
 
         # Check if the formatted guess matches the expected value
-        self.assertEqual(actual_formatted_guess, expected_formatted_guess, "Formatted guess does not match")
+        self.assertEqual(actual_formatted_guess.split('\n')[0], expected_formatted_guess, "Formatted guess does not match")
 
-        actual_formatted_score = format_score(guess, score)
+        actual_formatted_score = actual_formatted_guess.split('\n')[1]
 
         # Check if the formatted score matches the expected value
         self.assertEqual(actual_formatted_score, expected_formatted_score, "Formatted score does not match")
 
 if __name__ == "__main__":
     unittest.main()
-
