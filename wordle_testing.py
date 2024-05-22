@@ -2,7 +2,7 @@
 """Guess-My-Word is a game where the player has to guess a word.
 A game in which players put in 5-letters word guesses and see if they match the word of the day!
 Players will have 6 attempts to try guess the word correctly.
-Author: Xuan Koo 
+Author: Xuan Koo
 Company: WordsAreUs
 Copyright: 2024
 
@@ -26,38 +26,25 @@ ALL_WORDS = 'C:/Users/chery/OneDrive/Documents/Wordle/word-bank/all_words.txt'
 TARGET_WORDS = 'C:/Users/chery/OneDrive/Documents/Wordle/word-bank/target_words.txt'
 
 import random
-def play():
-    """Code that controls the interactive game play"""
-    # select a word of the day:
-    word_of_the_day = get_target_word()
-    # build a list of valid words (words that can be entered in the UI):
-    valid_words = get_valid_words()
-    # do the following in an iteration construct
-    guess = ask_for_guess(valid_words)
-    score = score_guess(guess, word_of_the_day)
-    # Put some of your own personality into this!
-    print("Result of your guess:")
-    print(format_score(guess, score))
-    if is_correct(score):
-        print("Winner winner chicken dinner! You guessed the word correctly!")
-    # end iteration
-    return True
+
+def help():
+    """Provides help for the game"""
+    print("Welcome to the Guess-My-Word! The objective of the game is to guess a 5-letter word, you have 6 attempts.")
+    print("🟩 - Indicates a correct letter in the wrong position")
+    print("🟨 - Indicates a correct letter in the correct position")
+    print("⬜ - Indicates a letter not in the target word")
 
 
-def is_correct(score):
-    return all(s == EXACT for s in score)
-
-def get_valid_words(file_path=ALL_WORDS, seed=None):
+def get_valid_words(file_path=ALL_WORDS):
     with open(file_path) as file:
         valid = file.read().split()
     return valid
 
 
-def get_target_word(file_path=TARGET_WORDS, seed=None):
+def get_target_word(file_path=TARGET_WORDS):
     with open(file_path) as file:
         words = file.read().split()
     return random.choice(words)
-
 
 def ask_for_guess(valid_words):
     guess_word = input("Take a guess at a 5-letter word!").lower()
@@ -78,13 +65,8 @@ def score_guess(guess, target_word):
             score.append(MISS)
     return tuple(score)
 
-
-def help():
-    """Provides help for the game"""
-    print("Welcome to the Guess-My-Word! The objective of the game is to guess a 5-letter word, you have 6 attempts.")
-    print("🟩 - Indicates a correct letter in the wrong position")
-    print("🟨 - Indicates a correct letter in the correct position")
-    print("⬜ - Indicates a letter not in the target word")
+def is_correct(score):
+    return all(s == EXACT for s in score)
 
 
 def format_score(guess, score):
@@ -92,7 +74,22 @@ def format_score(guess, score):
     formatted_score = ' '.join(['🟩' if s == EXACT else '🟨' if s == MISSPLACED else '⬜' for s in score])
     return f"{formatted_guess}\n{formatted_score}"
 
-
+def play():
+    """Code that controls the interactive game play"""
+    # select a word of the day:
+    word_of_the_day = get_target_word()
+    # build a list of valid words (words that can be entered in the UI):
+    valid_words = get_valid_words()
+    # do the following in an iteration construct
+    guess = ask_for_guess(valid_words)
+    score = score_guess(guess, word_of_the_day)
+    # Put some of your own personality into this!
+    print("Result of your guess:")
+    print(format_score(guess, score))
+    if is_correct(score):
+        print("Winner winner chicken dinner! You guessed the word correctly!")
+    # end iteration
+    return True
 
 def main(test=False):
     if test:
