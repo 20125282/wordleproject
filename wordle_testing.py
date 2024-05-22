@@ -2,7 +2,7 @@
 """Guess-My-Word is a game where the player has to guess a word.
 A game in which players put in 5-letters word guesses and see if they match the word of the day!
 Players will have 6 attempts to try guess the word correctly.
-Author: Xuan Koo
+Author: Xuan Koo 
 Company: WordsAreUs
 Copyright: 2024
 
