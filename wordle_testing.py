@@ -80,6 +80,7 @@ def format_score(guess, score):
 
 def play():
     """Code that controls the interactive game play"""
+    print(help())
     # Select a word of the day:
     word_of_the_day = get_target_word()
     # Build a list of valid words (words that can be entered in the UI):
