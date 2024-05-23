@@ -53,7 +53,7 @@ def ask_for_guess(valid_words):
         return guess_word
     else:
         print("Please enter a valid 5-letter word")
-        return ask_for_guess()
+        return ask_for_guess(valid_words)
 
 
 def score_guess(guess, target_word):
