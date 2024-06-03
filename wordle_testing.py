@@ -29,25 +29,28 @@ TARGET_WORDS = './word-bank/target_words.txt'
 
 def help():
     """Provides help for the game"""
-    print("Welcome to the Guess-My-Word! The objective of the game is to guess a 5-letter word, you have 6 attempts.")
+    print("Welcome to the Guess-My-Word! The objective of the game is to guess a 5-letter word with as little attempts as possible, you have 6 attempts.")
     print("🟩 - Indicates a correct letter in the wrong position")
     print("🟨 - Indicates a correct letter in the correct position")
     print("⬜ - Indicates a letter not in the target word")
 
 
 def get_valid_words(file_path=ALL_WORDS):
+    """Retrieve a list of valid words"""
     with open(file_path) as file:
         valid = file.read().split()
     return valid
 
 
 def get_target_word(file_path=TARGET_WORDS):
+    """Select a target word for the game"""
     with open(file_path) as file:
         words = file.read().split()
     return random.choice(words)
 
 
 def ask_for_guess(valid_words):
+    """Prompt the player to enter a guess"""
     guess_word = input("Take a guess at a 5-letter word!").lower()
     if guess_word in valid_words:
         return guess_word
@@ -57,6 +60,7 @@ def ask_for_guess(valid_words):
 
 
 def score_guess(guess, target_word):
+    """Score the player's guess"""
     score = []
     for guess_char, target_char in zip(guess, target_word):
         if guess_char == target_char:
@@ -69,10 +73,15 @@ def score_guess(guess, target_word):
 
 
 def is_correct(score):
-    return all(s == EXACT for s in score)
+    """Determine if the guess is correct"""
+    if score == (2, 2, 2, 2, 2):
+        return True
+    else:
+        return False
 
 
 def format_score(guess, score):
+    """Format the guess and score for display"""
     formatted_guess = ' '.join(guess.upper())
     formatted_score = ' '.join(['🟩' if s == EXACT else '🟨' if s == MISSPLACED else '⬜' for s in score])
     return f"{formatted_guess}\n{formatted_score}"
@@ -80,11 +89,11 @@ def format_score(guess, score):
 
 def play():
     """Code that controls the interactive game play"""
+    help()
     # Select a word of the day:
     word_of_the_day = get_target_word()
     # Build a list of valid words (words that can be entered in the UI):
     valid_words = get_valid_words()
-    print(word_of_the_day)
     # Start the game loop
     for attempt in range(MAX_ATTEMPTS):
         print(f"\nAttempt {attempt + 1}/{MAX_ATTEMPTS}:")
