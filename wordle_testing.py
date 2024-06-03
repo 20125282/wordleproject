@@ -23,8 +23,8 @@ EXACT = 2  # X, +: right letter, right place 🟩
 MAX_ATTEMPTS = 6
 WORD_LENGTH = 5
 
-ALL_WORDS = 'C:/Users/chery/OneDrive/Documents/Wordle/word-bank/all_words.txt'
-TARGET_WORDS = 'C:/Users/chery/OneDrive/Documents/Wordle/word-bank/target_words.txt'
+ALL_WORDS = './word-bank/all_words.txt'
+TARGET_WORDS = './word-bank/target_words.txt'
 
 
 def help():
@@ -53,7 +53,7 @@ def ask_for_guess(valid_words):
         return guess_word
     else:
         print("Please enter a valid 5-letter word")
-        return ask_for_guess(valid_words)
+        return ask_for_guess()
 
 
 def score_guess(guess, target_word):
@@ -80,11 +80,11 @@ def format_score(guess, score):
 
 def play():
     """Code that controls the interactive game play"""
-    print(help())
     # Select a word of the day:
     word_of_the_day = get_target_word()
     # Build a list of valid words (words that can be entered in the UI):
     valid_words = get_valid_words()
+    print(word_of_the_day)
     # Start the game loop
     for attempt in range(MAX_ATTEMPTS):
         print(f"\nAttempt {attempt + 1}/{MAX_ATTEMPTS}:")
