@@ -47,7 +47,7 @@ def get_target_word(file_path=TARGET_WORDS):
     file = open(file_path)
     target = file.read().split()
     file.close()
-    return target
+    return random.choice(target)
 
 
 def ask_for_guess(valid_words):
@@ -64,7 +64,9 @@ def ask_for_guess(valid_words):
 def score_guess(guess, target_word, MISS, MISSPLACED, EXACT):
     """Score the player's guess"""
     score = []
-    for guess_char, target_char in zip(guess, target_word):
+    for i in range(len(guess)):
+        guess_char = guess[i]
+        target_char = target_word[i]
         if guess_char == target_char:
             score.append(EXACT)
         elif guess_char in target_word:
