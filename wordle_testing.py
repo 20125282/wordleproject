@@ -37,29 +37,31 @@ def help():
 
 def get_valid_words(file_path=ALL_WORDS):
     """Retrieve a list of valid words"""
-    with open(file_path) as file:
-        valid = file.read().split()
+    file = open(file_path)
+    valid = file.read().split()
+    file.close()
     return valid
 
 
 def get_target_word(file_path=TARGET_WORDS):
-    """Select a target word for the game"""
-    with open(file_path) as file:
-        words = file.read().split()
-    return random.choice(words)
+    file = open(file_path)
+    target = file.read().split()
+    file.close()
+    return target
 
 
 def ask_for_guess(valid_words):
     """Prompt the player to enter a guess"""
-    guess_word = input("Take a guess at a 5-letter word!").lower()
-    if guess_word in valid_words:
-        return guess_word
-    else:
-        print("Please enter a valid 5-letter word")
-        return ask_for_guess()
+    while True:
+        guess_word = input("Take a guess at a 5-letter word!").lower()
+        if guess_word in valid_words:
+            return guess_word
+        else:
+            print("Please enter a valid 5-letter word")
 
 
-def score_guess(guess, target_word):
+
+def score_guess(guess, target_word, MISS, MISSPLACED, EXACT):
     """Score the player's guess"""
     score = []
     for guess_char, target_char in zip(guess, target_word):
@@ -98,7 +100,7 @@ def play():
     for attempt in range(MAX_ATTEMPTS):
         print(f"\nAttempt {attempt + 1}/{MAX_ATTEMPTS}:")
         guess = ask_for_guess(valid_words)
-        score = score_guess(guess, word_of_the_day)
+        score = score_guess(guess, word_of_the_day, MISS, MISSPLACED, EXACT)
         print("\nResult of your guess:")
         print(format_score(guess, score))
         if is_correct(score):
