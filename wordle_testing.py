@@ -34,6 +34,8 @@ def help():
     print("🟨 - Indicates a correct letter in the correct position")
     print("⬜ - Indicates a letter not in the target word")
 
+def get_player_name():
+    return input("Please enter your name: ")
 
 def get_valid_words(file_path=ALL_WORDS):
     """Retrieve a list of valid words"""
@@ -94,6 +96,8 @@ def format_score(guess, score):
 def play():
     """Code that controls the interactive game play"""
     help()
+    player_name = get_player_name()
+    print(f"Let's go, {player_name}!")
     # Select a word of the day:
     word_of_the_day = get_target_word()
     # Build a list of valid words (words that can be entered in the UI):
