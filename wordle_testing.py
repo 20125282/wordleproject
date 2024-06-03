@@ -86,11 +86,19 @@ def is_correct(score):
         return False
 
 
-def format_score(guess, score):
-    """Format the guess and score for display"""
-    formatted_guess = ' '.join(guess.upper())
-    formatted_score = ' '.join(['🟩' if s == EXACT else '🟨' if s == MISSPLACED else '⬜' for s in score])
-    return f"{formatted_guess}\n{formatted_score}"
+def format_score(guess, score, EXACT, MISSPLACED):
+    formatted_guess = ''
+    formatted_score = ''
+    for g in guess:
+        formatted_guess += g + ' '
+    for s in score:
+        if s == EXACT:
+            formatted_score += '🟩 '
+        elif s == MISSPLACED:
+            formatted_score += '🟨 '
+        else:
+            formatted_score += '⬜ '
+    return formatted_guess.strip() + '\n' + formatted_score.strip()
 
 
 def play():
@@ -108,7 +116,7 @@ def play():
         guess = ask_for_guess(valid_words)
         score = score_guess(guess, word_of_the_day, MISS, MISSPLACED, EXACT)
         print("\nResult of your guess:")
-        print(format_score(guess, score))
+        print(format_score(guess, score, EXACT, MISSPLACED))
         if is_correct(score):
             print("Congratulations! You've guessed the word correctly.")
             break
