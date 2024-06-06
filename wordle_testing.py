@@ -40,6 +40,17 @@ def get_player_name():
         player_name = "anonymous"
     return player_name
 
+def game_stats(player_name, attempt, target, is_correct):
+    result = 'Win' if is_correct else 'Lose'
+    statistics = "Player: " + player_name + "\nTarget Word: " + target + "\nAttempts: " + str(attempt) + "\nResult: " + result + "\n"
+
+
+    file = open('statistics.txt', 'a')
+    file.write(statistics)
+    file.write('\n')
+    file.close()
+
+
 
 def get_valid_words(file_path=ALL_WORDS):
     """Retrieve a list of valid words"""
@@ -123,9 +134,12 @@ def play():
         print(format_score(guess, score, EXACT, MISSPLACED))
         if is_correct(score):
             print("Congratulations! You've guessed the word correctly.")
+            game_stats(player_name, attempt + 1, word_of_the_day, True)
             break
     else:
         print(f"\nSorry, you've run out of attempts. The word of the day was: {word_of_the_day}")
+        game_stats(player_name, MAX_ATTEMPTS, word_of_the_day, False)
+
 
 
 def main(test=False):
