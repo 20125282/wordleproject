@@ -35,7 +35,11 @@ def help():
     print("⬜ - Indicates a letter not in the target word")
 
 def get_player_name():
-    return input("Please enter your name: ")
+    player_name = input("Please enter your name: ")
+    if not player_name:
+        player_name = "anonymous"
+    return player_name
+
 
 def get_valid_words(file_path=ALL_WORDS):
     """Retrieve a list of valid words"""
