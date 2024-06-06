@@ -34,16 +34,17 @@ def help():
     print("🟨 - Indicates a correct letter in the correct position")
     print("⬜ - Indicates a letter not in the target word")
 
+
 def get_player_name():
     player_name = input("Please enter your name: ")
     if not player_name:
         player_name = "anonymous"
     return player_name
 
+
 def game_stats(player_name, attempt, target, is_correct):
     result = 'Win' if is_correct else 'Lose'
-    statistics = "Player: " + player_name + "\nTarget Word: " + target + "\nAttempts: " + str(attempt) + "\nResult: " + result + "\n"
-
+    statistics = "Player: {}\nTarget Word: {}\nAttempts: {}\nResult: {}\n".format(player_name, target, attempt, result)
 
     file = open('statistics.txt', 'a')
     file.write(statistics)
@@ -51,20 +52,17 @@ def game_stats(player_name, attempt, target, is_correct):
     file.close()
 
 
-
 def get_valid_words(file_path=ALL_WORDS):
     """Retrieve a list of valid words"""
-    file = open(file_path)
-    valid = file.read().split()
-    file.close()
+    with open(file_path) as file:
+        valid = file.read().split()
     return valid
 
 
 def get_target_word(file_path=TARGET_WORDS):
-    file = open(file_path)
-    target = file.read().split()
-    file.close()
-    return random.choice(target)
+    with open(file_path) as file:
+        target = random.choice(file.read().split())
+    return target
 
 
 def ask_for_guess(valid_words):
@@ -77,13 +75,10 @@ def ask_for_guess(valid_words):
             print("Please enter a valid 5-letter word")
 
 
-
-def score_guess(guess, target_word, MISS, MISSPLACED, EXACT):
+def score_guess(guess, target_word):
     """Score the player's guess"""
     score = []
-    for i in range(len(guess)):
-        guess_char = guess[i]
-        target_char = target_word[i]
+    for guess_char, target_char in zip(guess, target_word):
         if guess_char == target_char:
             score.append(EXACT)
         elif guess_char in target_word:
@@ -95,25 +90,13 @@ def score_guess(guess, target_word, MISS, MISSPLACED, EXACT):
 
 def is_correct(score):
     """Determine if the guess is correct"""
-    if score == (2, 2, 2, 2, 2):
-        return True
-    else:
-        return False
+    return score == (2, 2, 2, 2, 2)
 
 
-def format_score(guess, score, EXACT, MISSPLACED):
-    formatted_guess = ''
-    formatted_score = ''
-    for g in guess:
-        formatted_guess += g + ' '
-    for s in score:
-        if s == EXACT:
-            formatted_score += '🟩 '
-        elif s == MISSPLACED:
-            formatted_score += '🟨 '
-        else:
-            formatted_score += '⬜ '
-    return formatted_guess.strip() + '\n' + formatted_score.strip()
+def format_score(guess, score):
+    formatted_guess = ' '.join(guess)
+    formatted_score = ' '.join(['🟩' if s == EXACT else '🟨' if s == MISSPLACED else '⬜' for s in score])
+    return formatted_guess + '\n' + formatted_score
 
 
 def play():
@@ -129,9 +112,9 @@ def play():
     for attempt in range(MAX_ATTEMPTS):
         print(f"\nAttempt {attempt + 1}/{MAX_ATTEMPTS}:")
         guess = ask_for_guess(valid_words)
-        score = score_guess(guess, word_of_the_day, MISS, MISSPLACED, EXACT)
+        score = score_guess(guess, word_of_the_day)
         print("\nResult of your guess:")
-        print(format_score(guess, score, EXACT, MISSPLACED))
+        print(format_score(guess, score))
         if is_correct(score):
             print("Congratulations! You've guessed the word correctly.")
             game_stats(player_name, attempt + 1, word_of_the_day, True)
@@ -139,7 +122,6 @@ def play():
     else:
         print(f"\nSorry, you've run out of attempts. The word of the day was: {word_of_the_day}")
         game_stats(player_name, MAX_ATTEMPTS, word_of_the_day, False)
-
 
 
 def main(test=False):
