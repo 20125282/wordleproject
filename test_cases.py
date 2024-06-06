@@ -1,6 +1,6 @@
 import unittest
-from wordle_testing import format_score, score_guess
-from wordle_testing import MISS, MISSPLACED, EXACT
+from wordle import format_score, score_guess
+from wordle import MISS, MISSPLACED, EXACT
 
 class TestScoring(unittest.TestCase):
     def test_score_hello_against_world(self):
